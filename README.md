@@ -43,3 +43,7 @@ Just update all the places you check the return values of these functions and yo
 * `PDO::rollback`
 * `PDO::setAttribute`
 * `PDOStatement::bindColumn`
+* `PDOStatement::bindParam`
+* `PDOStatement::bindValue`
+* `PDOStatement::closeCursor`
+* `PDOStatement::execute`
