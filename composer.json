@@ -9,7 +9,9 @@
             "email": "royall@royall.us"
         }
     ],
-    "require": {},
+    "require": {
+        "php": "^7.0"
+    },
     "autoload": {
         "psr-4": {"RoyallTheFourth\\SmoothPdo": "src"}
     }
