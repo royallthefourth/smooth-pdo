@@ -65,12 +65,12 @@ final class DataObject extends \PDO
         return $this;
     }
 
-    public function prepare($statement, array $driver_options = array()): Statement
+    public function prepare($statement, $driver_options = null): Statement
     {
         return new Statement(parent::prepare($statement, $driver_options));
     }
 
-    public function query($statement, $mode = PDO::ATTR_DEFAULT_FETCH_MODE, $arg3 = null, array $ctorargs = array())
+    public function query($statement, $mode = PDO::ATTR_DEFAULT_FETCH_MODE, $arg3 = null, array $ctorargs = array()): Statement
     {
         return new Statement(parent::query($statement, $mode, $arg3, $ctorargs));
     }
