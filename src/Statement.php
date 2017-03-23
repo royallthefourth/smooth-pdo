@@ -85,7 +85,11 @@ final class Statement extends \PDOStatement
         return $this;
     }
 
-    public function execute(array $input_parameters = null): Statement
+    /**
+     * @param array|null $input_parameters
+     * @return Statement
+     */
+    public function execute($input_parameters = null): Statement
     {
         if (!$this->stmt->execute($input_parameters)) {
             $this->except();
@@ -124,7 +128,13 @@ final class Statement extends \PDOStatement
         return $this->stmt->fetch($fetch_style, $cursor_orientation, $cursor_offset);
     }
 
-    public function fetchAll($fetch_style = null, $fetch_argument = null, array $ctor_args = array())
+    /**
+     * @param null $fetch_style
+     * @param null $fetch_argument
+     * @param array|null $ctor_args
+     * @return array
+     */
+    public function fetchAll($fetch_style = null, $fetch_argument = null, $ctor_args = null)
     {
         return $this->stmt->fetchAll($fetch_style, $fetch_argument, $ctor_args);
     }
@@ -134,7 +144,12 @@ final class Statement extends \PDOStatement
         return $this->stmt->fetchColumn($column_number);
     }
 
-    public function fetchObject($class_name = "stdClass", array $ctor_args = array())
+    /**
+     * @param string|null $class_name
+     * @param array|null $ctor_args
+     * @return mixed
+     */
+    public function fetchObject($class_name = null, $ctor_args = null)
     {
         return $this->stmt->fetchObject($class_name, $ctor_args);
     }
@@ -153,7 +168,7 @@ final class Statement extends \PDOStatement
         return $this;
     }
 
-    public function setFetchMode($mode): Statement
+    public function setFetchMode($mode, $params = null): Statement
     {
         if (!$this->stmt->setFetchMode($mode)) {
             $this->except();
