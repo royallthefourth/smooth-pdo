@@ -6,6 +6,9 @@ PDO is a perfectly fine way to access a database, but it would be a little more 
 Unfortunately, you can't do that with PDO since it uses boolean return values to indicate errors.
 This just overrides the methods that use return values to indicate errors so they throw exceptions instead.
 
+## Installation
+`composer require royallthefourth/smooth-pdo`
+
 ## Example
 A typical example from the PDO documentation looks like this:
 ```php
@@ -34,10 +37,9 @@ $dbh->prepare('SELECT name, colour, calories
     ->execute();
 ```
 
-## Migrating
-You don't even need to start a new project to benefit from this library.
-Because it extends `\PDO` and `\PDOStatement`, you can use it anywhere you already use PDO without much hassle.
-Just update all the places you check the return values of these functions and you're ready to go:
+## Differences from PDO
+This library works *almost* exactly like PDO.
+Just beware that these methods now throw exceptions instead of returning `false`:
 * `PDO::beginTransaction`
 * `PDO::commit`
 * `PDO::rollback`
@@ -48,5 +50,5 @@ Just update all the places you check the return values of these functions and yo
 * `PDOStatement::closeCursor`
 * `PDOStatement::execute`
 
-In this library, you won't be able to set a fetch mode on `PDO::query` due to a bizarre overloaded argument list that doesn't appear in normal PHP code.
-If you rely on that behavior, just `setFetchMode` on the returned statement instead.
+## Problems
+If you encounter any problems or notice any other divergence from PDO, please don't hesitate file an issue.
