@@ -11,12 +11,20 @@ final class Statement extends \PDOStatement
     public function __construct(\PDOStatement $statement)
     {
         $this->stmt = $statement;
-        $this->queryString = $statement->queryString;
     }
 
     private function except()
     {
         throw new \Exception($this->stmt->errorCode() . implode('. ', $this->stmt->errorInfo()));
+    }
+
+    public function __get($name)
+    {
+        if ($name === 'queryString') {
+            return $this->stmt->queryString;
+        }
+
+        return null;
     }
 
     /**
@@ -136,7 +144,13 @@ final class Statement extends \PDOStatement
      */
     public function fetchAll($fetch_style = null, $fetch_argument = null, $ctor_args = null)
     {
-        return $this->stmt->fetchAll($fetch_style, $fetch_argument, $ctor_args);
+        if ($fetch_style === \PDO::FETCH_CLASS) {
+            return $this->stmt->fetchAll($fetch_style, $fetch_argument, $ctor_args);
+        } elseif ($fetch_style === \PDO::FETCH_FUNC || $fetch_style === \PDO::FETCH_COLUMN) {
+            return $this->stmt->fetchAll($fetch_style, $fetch_argument);
+        } else {
+            return $this->stmt->fetchAll($fetch_style);
+        }
     }
 
     public function fetchColumn($column_number = 0)
