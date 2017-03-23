@@ -9,6 +9,11 @@ This just overrides the methods that use return values to indicate errors so the
 ## Installation
 `composer require royallthefourth/smooth-pdo`
 
+Now create a `SmoothPdo\DataObject` from a `\PDO` and you're all set:
+```php
+new RoyallTheFourth\SmoothPdo\DataObject(\PDO $db)
+```
+
 ## Example
 A typical example from the PDO documentation looks like this:
 ```php
