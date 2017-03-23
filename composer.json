@@ -1,0 +1,16 @@
+{
+    "name": "royallthefourth/smooth-pdo",
+    "description": "A drop-in PDO wrapper that provides smooth and pleasant method chaining",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Royall Spence",
+            "email": "royall@royall.us"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {"RoyallTheFourth\\SmoothPdo": "src"}
+    }
+}
