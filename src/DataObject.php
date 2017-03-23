@@ -78,12 +78,7 @@ final class DataObject extends \PDO
         return new Statement(parent::prepare($statement, $driver_options));
     }
 
-    public function query(
-        $statement,
-        $mode = PDO::ATTR_DEFAULT_FETCH_MODE,
-        $arg3 = null,
-        array $ctorargs = array()
-    ): Statement {
-        return new Statement(parent::query($statement, $mode, $arg3, $ctorargs));
+    public function query($statement): Statement {
+        return new Statement(parent::query($statement));
     }
 }
