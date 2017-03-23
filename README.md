@@ -48,5 +48,5 @@ Just update all the places you check the return values of these functions and yo
 * `PDOStatement::closeCursor`
 * `PDOStatement::execute`
 
-In this library, you won't be able to set a fetch mode on `PDO::query` due to a bizarre overloaded function list that doesn't appear in normal PHP code.
+In this library, you won't be able to set a fetch mode on `PDO::query` due to a bizarre overloaded argument list that doesn't appear in normal PHP code.
 If you rely on that behavior, just `setFetchMode` on the returned statement instead.
