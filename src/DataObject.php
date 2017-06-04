@@ -2,13 +2,13 @@
 
 namespace RoyallTheFourth\SmoothPdo;
 
-use PDO;
-
-final class DataObject extends \PDO
+class DataObject
 {
-    public function except()
+    private $pdo;
+
+    public function __construct(\PDO $pdo)
     {
-        throw new \Exception($this->errorCode() . implode('. ', $this->errorInfo()));
+        $this->pdo = $pdo;
     }
 
     /**
@@ -17,8 +17,8 @@ final class DataObject extends \PDO
      */
     public function beginTransaction(): DataObject
     {
-        if (!parent::beginTransaction()) {
-            $this->except();
+        if (!$this->pdo->beginTransaction()) {
+            throw new \Exception($this->pdo->errorCode() . implode('. ', $this->pdo->errorInfo()));
         }
 
         return $this;
@@ -30,8 +30,8 @@ final class DataObject extends \PDO
      */
     public function commit(): DataObject
     {
-        if (!parent::commit()) {
-            $this->except();
+        if (!$this->pdo->commit()) {
+            throw new \Exception($this->pdo->errorCode() . implode('. ', $this->pdo->errorInfo()));
         }
 
         return $this;
@@ -43,8 +43,8 @@ final class DataObject extends \PDO
      */
     public function rollBack(): DataObject
     {
-        if (!parent::rollBack()) {
-            $this->except();
+        if (!$this->pdo->rollBack()) {
+            throw new \Exception($this->pdo->errorCode() . implode('. ', $this->pdo->errorInfo()));
         }
 
         return $this;
@@ -58,8 +58,8 @@ final class DataObject extends \PDO
      */
     public function setAttribute($attribute, $value): DataObject
     {
-        if (!parent::setAttribute($attribute, $value)) {
-            $this->except();
+        if (!$this->pdo->setAttribute($attribute, $value)) {
+            throw new \Exception($this->pdo->errorCode() . implode('. ', $this->pdo->errorInfo()));
         }
 
         return $this;
@@ -69,16 +69,25 @@ final class DataObject extends \PDO
      * @param string $statement
      * @param array|null $driver_options
      * @return Statement
+     * @throws \Exception
      */
     public function prepare($statement, $driver_options = null): Statement
     {
         if (null === $driver_options) {
             $driver_options = [];
         }
-        return new Statement(parent::prepare($statement, $driver_options));
+
+        $stmt = $this->pdo->prepare($statement, $driver_options);
+
+        if ($stmt === false) {
+            throw new \Exception($this->pdo->errorCode() . implode('. ', $this->pdo->errorInfo()));
+        }
+
+        return new Statement($stmt);
     }
 
-    public function query($statement): Statement {
-        return new Statement(parent::query($statement));
+    public function query($statement): Statement
+    {
+        return new Statement($this->pdo->query($statement));
     }
 }

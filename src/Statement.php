@@ -4,18 +4,13 @@ namespace RoyallTheFourth\SmoothPdo;
 
 use PDO;
 
-final class Statement extends \PDOStatement
+class Statement
 {
     private $stmt;
 
     public function __construct(\PDOStatement $statement)
     {
         $this->stmt = $statement;
-    }
-
-    private function except()
-    {
-        throw new \Exception($this->stmt->errorCode() . implode('. ', $this->stmt->errorInfo()));
     }
 
     public function __get($name)
@@ -39,7 +34,7 @@ final class Statement extends \PDOStatement
     public function bindColumn($column, &$param, $type = null, $maxlen = null, $driverdata = null): Statement
     {
         if (!$this->stmt->bindColumn($column, $param, $type, $maxlen, $driverdata)) {
-            $this->except();
+            throw new \Exception($this->stmt->errorCode() . implode('. ', $this->stmt->errorInfo()));
         }
 
         return $this;
@@ -69,7 +64,7 @@ final class Statement extends \PDOStatement
             $driver_options
         )
         ) {
-            $this->except();
+            throw new \Exception($this->stmt->errorCode() . implode('. ', $this->stmt->errorInfo()));
         }
 
         return $this;
@@ -78,7 +73,7 @@ final class Statement extends \PDOStatement
     public function bindValue($parameter, $value, $data_type = PDO::PARAM_STR): Statement
     {
         if (!$this->stmt->bindValue($parameter, $value, $data_type)) {
-            $this->except();
+            throw new \Exception($this->stmt->errorCode() . implode('. ', $this->stmt->errorInfo()));
         }
 
         return $this;
@@ -87,7 +82,7 @@ final class Statement extends \PDOStatement
     public function closeCursor(): Statement
     {
         if (!$this->stmt->closeCursor()) {
-            $this->except();
+            throw new \Exception($this->stmt->errorCode() . implode('. ', $this->stmt->errorInfo()));
         }
 
         return $this;
@@ -96,11 +91,12 @@ final class Statement extends \PDOStatement
     /**
      * @param array|null $input_parameters
      * @return Statement
+     * @throws \Exception
      */
     public function execute($input_parameters = null): Statement
     {
         if (!$this->stmt->execute($input_parameters)) {
-            $this->except();
+            throw new \Exception($this->stmt->errorCode() . implode('. ', $this->stmt->errorInfo()));
         }
 
         return $this;
@@ -153,7 +149,7 @@ final class Statement extends \PDOStatement
         }
     }
 
-    public function fetchColumn($column_number = 0)
+    public function fetchColumn($column_number = 0): string
     {
         return $this->stmt->fetchColumn($column_number);
     }
@@ -176,7 +172,7 @@ final class Statement extends \PDOStatement
     public function setAttribute($attribute, $value): Statement
     {
         if (!$this->stmt->setAttribute($attribute, $value)) {
-            $this->except();
+            throw new \Exception($this->stmt->errorCode() . implode('. ', $this->stmt->errorInfo()));
         }
 
         return $this;
@@ -185,13 +181,13 @@ final class Statement extends \PDOStatement
     public function setFetchMode($mode, $params = null): Statement
     {
         if (!$this->stmt->setFetchMode($mode)) {
-            $this->except();
+            throw new \Exception($this->stmt->errorCode() . implode('. ', $this->stmt->errorInfo()));
         }
 
         return $this;
     }
 
-    public function rowCount()
+    public function rowCount(): int
     {
         return $this->stmt->rowCount();
     }
