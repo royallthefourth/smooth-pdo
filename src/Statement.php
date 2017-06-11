@@ -138,15 +138,17 @@ class Statement
      * @param array|null $ctor_args
      * @return array
      */
-    public function fetchAll($fetch_style = null, $fetch_argument = null, $ctor_args = null)
+    public function fetchAll($fetch_style = null, $fetch_argument = null, $ctor_args = null): array
     {
         if ($fetch_style === \PDO::FETCH_CLASS) {
-            return $this->stmt->fetchAll($fetch_style, $fetch_argument, $ctor_args);
+            $res = $this->stmt->fetchAll($fetch_style, $fetch_argument, $ctor_args);
         } elseif ($fetch_style === \PDO::FETCH_FUNC || $fetch_style === \PDO::FETCH_COLUMN) {
-            return $this->stmt->fetchAll($fetch_style, $fetch_argument);
+            $res = $this->stmt->fetchAll($fetch_style, $fetch_argument);
         } else {
-            return $this->stmt->fetchAll($fetch_style);
+            $res = $this->stmt->fetchAll($fetch_style);
         }
+
+        return $res;
     }
 
     public function fetchColumn($column_number = 0): string
